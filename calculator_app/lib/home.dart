@@ -13,7 +13,7 @@ class _homepageState extends State<homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Calculaor App"),
+        title: Text("Calculator"),
         backgroundColor: Colors.amber,
         centerTitle: true,
       ),
