@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:todo_list/constants/colors.dart';
+import '../widgets/todo_item.dart';
 
 class todolist extends StatefulWidget {
   const todolist({super.key});
@@ -33,7 +32,8 @@ class _todolistState extends State<todolist> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  )
+                  ),
+                  ToDoItem()
                 ],
               ),
             )
