@@ -92,7 +92,7 @@ class _todolistState extends State<todolist> {
             width: 40,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset("avatar.png"),
+              child: Image.asset("assets/avatar.png"),
             ),
           )
         ],
