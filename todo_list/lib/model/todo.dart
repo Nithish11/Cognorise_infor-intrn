@@ -5,7 +5,9 @@ class ToDo{
 
   ToDo(
     {
-      required id,required todoText,this.isDone=false
+      required this.id,
+      required this.todoText,
+      this.isDone = false,
     }
   );
   static List<ToDo> todoList(){
@@ -16,7 +18,6 @@ class ToDo{
         ToDo(id: '04', todoText: 'Read Book',),
         ToDo(id: '05', todoText: 'Evening walking',),
         ToDo(id: '06', todoText: 'cooking',),
-
     ];
     }
   }
