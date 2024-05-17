@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/constants/colors.dart';
+import '../constants/colors.dart';
+import '../model/todo.dart';
 import '../widgets/todo_item.dart';
 
-class todolist extends StatefulWidget {
-  const todolist({super.key});
+class todolist extends StatelessWidget {
+   todolist({Key? key}) : super(key:key);
 
-  @override
-  State<todolist> createState() => _todolistState();
-}
+  final todosList = ToDo.todoList();
 
-class _todolistState extends State<todolist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +31,8 @@ class _todolistState extends State<todolist> {
                       ),
                     ),
                   ),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-                  ToDoItem(),
-
-
+                  for (ToDo todoo in todosList)
+                       ToDoItem(todo: todoo,),
                 ],
               ),
             )
