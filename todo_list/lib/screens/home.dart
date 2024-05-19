@@ -1,11 +1,18 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../model/todo.dart';
 import '../widgets/todo_item.dart';
 
-class todolist extends StatelessWidget {
+class todolist extends StatefulWidget {
   todolist({Key? key}) : super(key: key);
 
+  @override
+  State<todolist> createState() => _todolistState();
+}
+
+class _todolistState extends State<todolist> {
   final todosList = ToDo.todoList();
 
   @override
@@ -49,7 +56,7 @@ class todolist extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 20, right: 20, left: 20),
+                    margin: EdgeInsets.only(bottom: 20, right: 16, left: 20),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -70,15 +77,18 @@ class todolist extends StatelessWidget {
                   ),
                 ),
                 Container(
+              
+                  padding: EdgeInsets.only(bottom: 22, top: 5,right: 10),
                   child: ElevatedButton(
                     onPressed: () {},
                     child: Text(
                       "+",
-                      style: TextStyle(fontSize: 40),
+                      style: TextStyle(fontSize: 40, color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      
-                      minimumSize: Size(60, 60),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
+                      backgroundColor: tdBlue,
                       elevation: 10,
                     ),
                   ),
@@ -90,6 +100,17 @@ class todolist extends StatelessWidget {
       ),
     );
   }
+
+  void _handleToDoChange(ToDo todo){
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+    
+  }
+
+
+
+
 
   Widget searchBox() {
     return Container(
