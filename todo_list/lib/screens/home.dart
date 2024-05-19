@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import '../model/todo.dart';
@@ -14,8 +12,16 @@ class todolist extends StatefulWidget {
 
 class _todolistState extends State<todolist> {
   final todosList = ToDo.todoList();
+  List<ToDo> _foundToDo = [];
+  final _todoController = TextEditingController();
 
   @override
+  void initstate() {
+    _foundToDo = todosList;
+    super.initState();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: tdBGColor,
@@ -40,9 +46,11 @@ class _todolistState extends State<todolist> {
                           ),
                         ),
                       ),
-                      for (ToDo todoo in todosList)
+                      for (ToDo todoo in _foundToDo.reversed)
                         ToDoItem(
                           todo: todoo,
+                          onToDoChanged: _handleToDoChange,
+                          onDeleteItem: _deleteToDoItem,
                         ),
                     ],
                   ),
@@ -67,9 +75,10 @@ class _todolistState extends State<todolist> {
                             blurRadius: 10.0,
                             spreadRadius: 0.0)
                       ],
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextField(
+                      controller: _todoController,
                       decoration: InputDecoration(
                           hintText: 'Add a new todo item',
                           border: InputBorder.none),
@@ -77,17 +86,18 @@ class _todolistState extends State<todolist> {
                   ),
                 ),
                 Container(
-              
-                  padding: EdgeInsets.only(bottom: 22, top: 5,right: 10),
+                  padding: EdgeInsets.only(bottom: 22, top: 5, right: 10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _addToDoItem(_todoController.text);
+                    },
                     child: Text(
                       "+",
                       style: TextStyle(fontSize: 40, color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0)),
+                          borderRadius: BorderRadius.circular(5)),
                       backgroundColor: tdBlue,
                       elevation: 10,
                     ),
@@ -101,16 +111,43 @@ class _todolistState extends State<todolist> {
     );
   }
 
-  void _handleToDoChange(ToDo todo){
+  void _handleToDoChange(ToDo todo) {
     setState(() {
       todo.isDone = !todo.isDone;
     });
-    
   }
 
+  void _deleteToDoItem(String id) {
+    setState(() {
+      todosList.removeWhere((item) => item.id == id);
+    });
+  }
 
+  void _addToDoItem(String todo) {
+    setState(() {
+      todosList.add(ToDo(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          todoText: todo));
+    });
+    _todoController.clear();
+  }
 
+  void _runFilter(String enteredKeyword) {
+    List<ToDo> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = todosList;
+    } else {
+      results = todosList
+          .where((item) => item.todoText!
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
 
+    setState(() {
+      _foundToDo = results;
+    });
+  }
 
   Widget searchBox() {
     return Container(
@@ -118,8 +155,11 @@ class _todolistState extends State<todolist> {
         horizontal: 15,
       ),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: const TextField(
+          color: Colors.white, 
+          borderRadius: BorderRadius.circular(0)
+      ),
+      child: TextField(
+        onChanged: (value) => _runFilter(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
             prefix: Icon(
